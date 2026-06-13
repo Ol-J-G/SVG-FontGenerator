@@ -1,4 +1,4 @@
-# svg2ttf — SVG to TrueType Font Converter
+# svg2ttf — SVG to TrueType Font Generator
 
 Converts individual SVG glyph files into a valid TrueType (`.ttf`) font.
 
@@ -6,7 +6,7 @@ Converts individual SVG glyph files into a valid TrueType (`.ttf`) font.
 
 ```bash
 sudo apt install python3.12-venv   # Debian/Ubuntu only, once
-./makefont glyphs/latin/ -o MyFont.ttf --family "MyFont"
+./makefont glyphs/ -o MyFont.ttf --family "MyFont"
 ```
 
 The `makefont` script creates a Python virtual environment (`.venv`), installs [fonttools](https://github.com/fonttools/fonttools) v4.63+ if needed, and runs `svg2ttf.py` with your arguments.
@@ -14,7 +14,7 @@ The `makefont` script creates a Python virtual environment (`.venv`), installs [
 ## Prerequisites
 
 - Python 3.8+
-- `python3-venv` (required once, install via `sudo apt install python3.12-venv`)
+- `python3-venv` (required once, install e.g. in Linux via `sudo apt install python3.12-venv`)
 
 ## Usage
 
@@ -54,12 +54,12 @@ Each SVG must:
 How I create the glyphs:
 - Create a SVG document of your choice (e.g. 144x208 pixel) with Inkscape (available on many platforms)
 - Draw the glyph
-- Save SVG file to glyphs
+- Save SVG file to <input_folder> (organized in sub folders)
 
 ### Example
 
 ```
-./makefont glyphs/latin/ -o MyFont.ttf --family "MyFont"
+./makefont glyphs/ -o MyFont.ttf --family "MyFont"
 ```
 
 ## Output
