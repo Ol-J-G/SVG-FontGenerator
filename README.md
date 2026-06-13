@@ -26,7 +26,7 @@ The `makefont` script creates a Python virtual environment (`.venv`), installs [
 
 | Argument | Default | Description |
 |---|---|---|
-| `input_dir` | — | Directory with `0x<hex>.svg` files |
+| `input_dir` | — | Directory containing `0x*.svg` files (searches recursively) |
 | `-o, --output` | `output.ttf` | Output font file |
 | `--family` | `MyFont` | Font family name |
 | `--style` | `Regular` | Font style name (auto-sets to `Bold` if `--bold > 0`) |

@@ -217,7 +217,7 @@ def main():
         else:
             style = "Regular"
 
-    files = sorted(glob.glob(os.path.join(args.input_dir, "0x*.svg")))
+    files = sorted(glob.glob(os.path.join(args.input_dir, "**", "0x*.svg"), recursive=True))
     if not files:
         print(f"No 0x*.svg files found in {args.input_dir}")
         return
