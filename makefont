@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+VENV_DIR="$(cd "$(dirname "$0")" && pwd)/.venv"
+SCRIPT_DIR="$(dirname "$0")"
+
+if [ ! -d "$VENV_DIR" ]; then
+    echo "Creating virtual environment..." >&2
+    python3 -m venv --copies "$VENV_DIR"
+fi
+
+if ! "$VENV_DIR/bin/python3" -c "import fontTools" 2>/dev/null; then
+    echo "Installing fonttools..." >&2
+    "$VENV_DIR/bin/pip" install --quiet fonttools==4.63.0
+fi
+
+exec "$VENV_DIR/bin/python3" "$SCRIPT_DIR/svg2ttf.py" "$@"
