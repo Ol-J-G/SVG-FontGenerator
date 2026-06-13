@@ -86,7 +86,8 @@ def svg_to_glyph(svg_path, upem, y_offset=0):
     return glyph, advance
 
 
-def build_font(glyph_list, upem, family="MyFont", style="Regular", bold_amount=0, narrow_amount=0):
+def build_font(glyph_list, upem, family="MyFont", style="Regular", bold_amount=0, narrow_amount=0,
+               version=None, author=None, manufacturer=None, copyright_notice=None, license_text=None):
     glyph_list = sorted(glyph_list, key=lambda x: x[0])
 
     glyph_order = [".notdef", ".null", "space"]
@@ -137,14 +138,23 @@ def build_font(glyph_list, upem, family="MyFont", style="Regular", bold_amount=0
     fb.setupHorizontalMetrics(metrics)
     descent = int(upem * -0.2)
     fb.setupHorizontalHeader(ascent=upem, descent=descent)
-    fb.setupNameTable({
+    name_strings = {
         "familyName": family,
         "styleName": style,
         "uniqueFontIdentifier": f"fontBuilder: {family}.{style}",
         "fullName": f"{family} {style}",
         "psName": f"{family}-{style}",
-        "version": "Version 1.0",
-    })
+        "version": f"Version {version}" if version else "Version 1.0",
+    }
+    if copyright_notice:
+        name_strings["copyright"] = copyright_notice
+    if author:
+        name_strings["designer"] = author
+    if manufacturer:
+        name_strings["manufacturer"] = manufacturer
+    if license_text:
+        name_strings["licenseDescription"] = license_text
+    fb.setupNameTable(name_strings)
     fb.setupOS2(
         sTypoAscender=upem,
         sTypoDescender=descent,
@@ -204,6 +214,11 @@ def main():
                         help="Bold scale factor in font units: scale_x = 1 + bold/1000 (0=no bold, 50=5%% wider, 100=10%% wider)")
     parser.add_argument("--narrow", type=float, default=0,
                         help="Narrow scale factor: scale_x = 1 - narrow/1000 (0=normal, 100=10%% narrower)")
+    parser.add_argument("--version", default=None, help="Font version string (default: 1.0)")
+    parser.add_argument("--author", default=None, help="Font author/designer name (nameID 9)")
+    parser.add_argument("--manufacturer", default=None, help="Font manufacturer name (nameID 8)")
+    parser.add_argument("--copyright", default=None, help="Copyright notice string")
+    parser.add_argument("--license", default=None, help="License description string")
     args = parser.parse_args()
 
     style = args.style
@@ -281,7 +296,9 @@ def main():
 
         glyph_list.append((codepoint, glyph_name, glyph, advance))
 
-    font = build_font(glyph_list, args.upem, args.family, style, bold_amount=args.bold, narrow_amount=args.narrow)
+    font = build_font(glyph_list, args.upem, args.family, style, bold_amount=args.bold, narrow_amount=args.narrow,
+                       version=args.version, author=args.author, manufacturer=args.manufacturer,
+                       copyright_notice=args.copyright, license_text=args.license)
     font.save(args.output)
     print(f"Saved {args.output} with {len(glyph_list)} glyphs")
 

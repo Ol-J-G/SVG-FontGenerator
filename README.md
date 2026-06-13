@@ -19,7 +19,7 @@ The `makefont` script creates a Python virtual environment (`.venv`), installs [
 ## Usage
 
 ```
-./makefont <input_dir> -o <output.ttf> [--family <name>] [--style <name>] [--upem <units>] [--bold <amount>] [--narrow <amount>]
+./makefont <input_dir> -o <output.ttf> [--family <name>] [--style <name>] [--upem <units>] [--bold <amount>] [--narrow <amount>] [--version <ver>] [--author <name>] [--manufacturer <name>] [--copyright <text>] [--license <text>]
 ```
 
 ### Arguments
@@ -33,6 +33,10 @@ The `makefont` script creates a Python virtual environment (`.venv`), installs [
 | `--upem` | `1000` | Units per em |
 | `--bold` | `0` | Outline expansion in font units (0 = no bold) |
 | `--narrow` | `0` | Horizontal scaling in font units (0 = no narrow) |
+| `--version` | `1.0` | Font version string (embedded as "Version X.Y") |
+| `--author` | — | Author/manufacturer name (nameID 8) |
+| `--copyright` | — | Copyright notice (nameID 0) |
+| `--license` | — | License description (nameID 13) |
 
 ## Input Format
 
@@ -113,6 +117,29 @@ Unlike `--bold`, narrow scaling also reduces the advance width proportionally. C
 ```
 
 The script automatically sets the style name (`Condensed`, `Condensed Bold`) and `OS/2.usWidthClass` based on the narrow amount.
+
+## Metadata
+
+Optional parameters embed font metadata into the name table:
+
+```bash
+./makefont glyphs/ -o MyFont.ttf --family "MyFont" \
+  --version "2.0" \
+  --author "Jane Doe" \
+  --manufacturer "Acme Corp" \
+  --copyright "2026 Jane Doe" \
+  --license "Licensed under the Apache License, Version 2.0"
+```
+
+| Parameter | Name ID | Example |
+|---|---|---|
+| `--version` | 5 (version) | `"2.0"` → "Version 2.0" |
+| `--author` | 9 (designer) | `"Jane Doe"` |
+| `--manufacturer` | 8 (manufacturer) | `"Acme Corp"` |
+| `--copyright` | 0 (copyright) | `"2026 Jane Doe"` |
+| `--license` | 13 (licenseDescription) | `"Licensed under the Apache License, Version 2.0"` |
+
+When omitted, no extra metadata is added (version defaults to "Version 1.0").
 
 ## Technical Notes
 
