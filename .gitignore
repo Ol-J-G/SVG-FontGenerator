@@ -1,0 +1,7 @@
+.venv/
+.idea/
+glyphs/
+.opencode/
+__pycache__/
+*.svg
+*.ttf
