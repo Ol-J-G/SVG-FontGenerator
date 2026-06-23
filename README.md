@@ -1,6 +1,6 @@
 # svg2ttf — SVG to TrueType Font Generator
 
-Converts individual SVG glyph files into a valid TrueType (`.ttf`) font.
+Assembles individual SVG glyph files into a valid TrueType (`.ttf`) font.
 
 ## Quick Start
 
@@ -37,6 +37,10 @@ The `makefont` script creates a Python virtual environment (`.venv`), installs [
 | `--author` | — | Author/manufacturer name (nameID 8) |
 | `--copyright` | — | Copyright notice (nameID 0) |
 | `--license` | — | License description (nameID 13) |
+
+#### CAUTION
+Please do not expect too much from `--bold` and `--narrow`!<br>
+This may depend on Font geometry and amount, and will not always produce good results!
 
 ## Input Format
 
